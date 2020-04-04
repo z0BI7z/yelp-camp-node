@@ -32,7 +32,7 @@ app.get('/campgrounds', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.render('campgrounds', { campgrounds: allCampgrounds });
+            res.render('index', { campgrounds: allCampgrounds });
         }
     });
 });
@@ -41,9 +41,10 @@ app.get('/campgrounds', function (req, res) {
 app.post('/campgrounds', function (req, res) {
     var name = req.body.name;
     var image = req.body.image;
+    var description = req.body.description
 
     Campground.create(
-        { name: name, image: image },
+        { name: name, image: image, description: description },
         function (err, newCampground) {
             if (err) {
                 console.log(err);
@@ -64,10 +65,12 @@ app.get('/campgrounds/:id', function (req, res) {
     var id = req.params.id;
     Campground.findById(id)
         .exec()
-        .then(result => {
-            res.status(200).json(
-                result
-            );
+        .then(campground => {
+            if (campground) {
+                res.render('show', { campground: campground });
+            } else {
+                res.status(500);
+            }
         })
         .catch(err => {
             res.status(500).json({
