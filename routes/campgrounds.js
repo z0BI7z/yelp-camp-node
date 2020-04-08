@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Campground = require('../models/campground');
+var Comment = require('../models/comment');
 var middleware = require('../middleware');
 
 // GET
@@ -87,15 +88,29 @@ router.put('/:id', middleware.checkCampgroundOwnership, function (req, res) {
 
 // DESTROY
 router.delete('/:id', middleware.checkCampgroundOwnership, function (req, res) {
-    Campground.findByIdAndRemove(req.params.id, function (err) {
+    Campground.findById(req.params.id, function(err, campground) {
         if (err) {
             console.log(err);
             res.redirect('/campgrounds');
         } else {
-            req.flash('success', 'Campground deleted.')
-            res.redirect('/campgrounds');
+            Comment.deleteMany({_id: campground.comments }, function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.redirect('back');
+                }
+            });
         }
     });
+    // Campground.findByIdAndRemove(req.params.id, function (err) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.redirect('/campgrounds');
+    //     } else {
+    //         req.flash('success', 'Campground deleted.')
+    //         res.redirect('/campgrounds');
+    //     }
+    // });
 });
 
 
