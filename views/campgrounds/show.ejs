@@ -18,8 +18,19 @@
                 <div class="thumbnail">
                     <h4 class="card-title"><%= campground.name %> <span class="float-right">$9.00/night</span></h4>
                     <p class="card-text"><%= campground.description %></p>
+                    <em>
+                        <p>Submitted By <%= campground.author.username %>
+                    </em></p>
 
+                    <!-- edit -->
+                    <% if (currentUser && campground.author.id.equals(currentUser._id)) { %>
+                    <a class="btn btn-warning btn-sm" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+                    <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" class="deleteForm">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    <% } %>
 
+                    <!-- comments -->
                     <div class="list-group mt-3">
                         <div class="list-group-item">
                             <a class="btn btn-primary btn-sm float-right"
@@ -28,9 +39,17 @@
 
                         <% campground.comments.forEach(function(comment) { %>
                         <div class="list-group-item">
-                            <%= comment.author %>
-                            <span class="float-right">20 days ago</span>
+                            <p><%= comment.author.username %> <span class="float-right">20 days ago</span></p>
                             <p><%= comment.text %></p>
+
+                            <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+                            <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit"
+                                class="btn btn-sm btn-warning">Edit</a>
+                            <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE"
+                                method="POST" class="deleteForm">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            <% } %>
                         </div>
                         <% }) %>
                     </div>
