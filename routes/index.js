@@ -19,9 +19,11 @@ router.post('/register', function (req, res) {
     User.register(newUser, req.body.password, function (err, user) {
         if (err) {
             console.log(err);
-            return res.render('register');
+            req.flash('error', err.message);
+            return res.redirect('/register');
         }
         passport.authenticate('local')(req, res, function () {
+            req.flash('success', 'Welcome to YelpCamp ' + user.username);
             res.redirect('/campgrounds');
         });
     });
@@ -42,15 +44,7 @@ router.post('/login', passport.authenticate('local', {
 // Logout
 router.get('/logout', function (req, res) {
     req.logout();
-    res.redirect('/campgrounds');
+    res.redirect('back');
 });
-
-// Middleware
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
 
 module.exports = router;

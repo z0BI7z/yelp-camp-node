@@ -2,30 +2,24 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <p class="lead">YelpCamp</p>
-            <div class="list-group">
-                <li class="list-group-item active">Info 1</li>
-                <li class="list-group-item">Info 2</li>
-                <li class="list-group-item">Info 3</li>
-            </div>
-        </div>
+        <div class="col-md-3"></div>
 
         <div class="card col-md-9 pt-2">
             <img class="card-img-top rounded" src="<%= campground.image %>" alt="">
 
             <div class="card-body">
                 <div class="thumbnail">
-                    <h4 class="card-title"><%= campground.name %> <span class="float-right">$9.00/night</span></h4>
-                    <p class="card-text"><%= campground.description %></p>
+                    <h2 class="card-title text-primary d-inline"><%= campground.name %></h2>
+                    <p class="card-subtitle text-muted d-inline float-right">$<%= Number(campground.price).toFixed(2) %> per night</p>
+                    <p class="card-text mt-3"><%= campground.description %></p>
                     <em>
-                        <p>Submitted By <%= campground.author.username %>
-                    </em></p>
+                        <p>Submitted By <%= campground.author.username %></p>
+                    </em>
 
                     <!-- edit -->
                     <% if (currentUser && campground.author.id.equals(currentUser._id)) { %>
                     <a class="btn btn-warning btn-sm" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-                    <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" class="deleteForm">
+                    <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" class="d-inline">
                         <button class="btn btn-danger btn-sm">Delete</button>
                     </form>
                     <% } %>
@@ -46,7 +40,7 @@
                             <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit"
                                 class="btn btn-sm btn-warning">Edit</a>
                             <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE"
-                                method="POST" class="deleteForm">
+                                method="POST" class="d-inline">
                                 <button class="btn btn-danger btn-sm">Delete</button>
                             </form>
                             <% } %>

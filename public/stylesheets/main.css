@@ -2,6 +2,12 @@
     width: 100%;
 }
 
-.deleteForm {
-    display: inline;
+.userSection {
+    max-width: 300px;
+    margin: 20px auto;
+}
+
+.inputSection {
+    max-width: 360px;
+    margin: 20px auto;
 }
