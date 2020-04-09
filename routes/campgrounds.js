@@ -88,16 +88,27 @@ router.put('/:id', middleware.checkCampgroundOwnership, function (req, res) {
 
 // DESTROY
 router.delete('/:id', middleware.checkCampgroundOwnership, function (req, res) {
-    Campground.findById(req.params.id, function(err, campground) {
+    Campground.findById(req.params.id, function (err, campground) {
         if (err) {
             console.log(err);
+            req.flash('error', 'Something went wrong.');
             res.redirect('/campgrounds');
         } else {
-            Comment.deleteMany({_id: campground.comments }, function (err) {
+            Comment.deleteMany({ _id: campground.comments }, function (err) {
                 if (err) {
+                    req.flash('error', 'Something went wrong.');
                     console.log(err);
                 } else {
-                    res.redirect('back');
+                    campground.remove(function (err) {
+                        if (err) {
+                            req.flash('error', 'Something went wrong.');
+                            console.log(err);
+                            res.redirect('back');
+                        } else {
+                            req.flash('success', 'Campground deleted.');
+                            res.redirect('/campgrounds');
+                        }
+                    });
                 }
             });
         }
