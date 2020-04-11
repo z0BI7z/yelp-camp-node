@@ -18,7 +18,8 @@ var commentRoutes = require('./routes/comments');
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true
 // });
-mongoose.connect('mongodb+srv://axablb:' + process.env.MONGO_ATLAS_PW + '@cluster0-xt6af.mongodb.net/test?retryWrites=true&w=majority', {
+var url = process.env.DATABASEURL ? process.env.DATABASEURL + '/yelp_camp' : 'mongodb+srv://' + process.env.MONGO_ATLAS_USER + ':' + process.env.MONGO_ATLAS_PW + '@cluster0-xt6af.mongodb.net/test?retryWrites=true&w=majority';
+mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
